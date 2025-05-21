@@ -18,7 +18,7 @@ namespace Gzl.BusinessLogicLayer
         private string _bjmc;		    //班级名称
         private int    _bjrs;           //班级人数
         private bool   _yxbz;           //有效标志
-        private bool   _exist;		    //是否存在标志
+        private bool   _exist;		    // 是否存在标志
 
         #endregion 私有成员
 
