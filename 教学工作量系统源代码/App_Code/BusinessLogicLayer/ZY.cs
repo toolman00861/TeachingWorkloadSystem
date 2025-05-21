@@ -84,6 +84,10 @@ namespace Gzl.BusinessLogicLayer
         /// 根据参数zybh，获取专业详细信息
         /// </summary>
         /// <param name="zybh">专业编号</param>
+        public void test()
+        {
+
+        }
         public void LoadData(string zybh)
         {
             Database db = new Database();		//实例化一个Database类
