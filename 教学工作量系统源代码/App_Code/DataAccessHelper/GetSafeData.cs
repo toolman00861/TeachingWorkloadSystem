@@ -98,12 +98,22 @@ namespace Gzl.DataAccessHelper
 				return System.String.Empty;
 		}
 
-		public static int ValidateDataReader_N(SqlDataReader reader,string colname)
+		public static int ValidateDataReader_N(SqlDataReader reader, string colname)
 		{
-			if(reader.GetValue(reader.GetOrdinal(colname))!=DBNull.Value)
-				return reader.GetInt32(reader.GetOrdinal(colname));
+			int ordinal;
+			try
+			{
+				ordinal = reader.GetOrdinal(colname);
+			}
+			catch (IndexOutOfRangeException)
+			{
+				return 0; // 或其他默认值
+			}
+
+			if (!reader.IsDBNull(ordinal))
+				return reader.GetInt32(ordinal);
 			else
-				return System.Int32.MinValue;
+				return 0; // 或其他默认值
 		}
 
 		public static double ValidateDataReader_F(SqlDataReader reader,string colname)
