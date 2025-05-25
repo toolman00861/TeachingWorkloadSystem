@@ -171,24 +171,32 @@ namespace Gzl.DataAccessLayer
 			return dataset;
 		}
 
-		/// <summary>
-		/// 公有方法，获取数据，返回一个DataTable。
-		/// </summary>
-		/// <param name="SqlString">Sql语句</param>
-		/// <returns>DataTable</returns>
-		public DataTable GetDataTable(String SqlString)
-		{
-			DataSet dataset = GetDataSet(SqlString);
-			dataset.CaseSensitive = false;
-			return dataset.Tables[0];
-		}
+        /// <summary>
+        /// 公有方法，获取数据，返回一个DataTable。
+        /// </summary>
+        /// <param name="SqlString">Sql语句</param>
+        /// <returns>DataTable</returns>
+		/// 增加参数化查询方法
+        public DataTable GetDataTable(string sql, params SqlParameter[] parameters)
+        {
+            using (var cmd = new SqlCommand(sql, Connection))
+            {
+                cmd.Parameters.AddRange(parameters);
+                using (var adapter = new SqlDataAdapter(cmd))
+                {
+                    DataTable dt = new DataTable();
+                    adapter.Fill(dt);
+                    return dt;
+                }
+            }
+        }
 
-		/// <summary>
-		/// 公有方法，获取数据，返回一个DataRow。
-		/// </summary>
-		/// <param name="SqlString">Sql语句</param>
-		/// <returns>DataRow</returns>
-		public DataRow GetDataRow(String SqlString)
+        /// <summary>
+        /// 公有方法，获取数据，返回一个DataRow。
+        /// </summary>
+        /// <param name="SqlString">Sql语句</param>
+        /// <returns>DataRow</returns>
+        public DataRow GetDataRow(String SqlString)
 		{
 			DataSet dataset = GetDataSet(SqlString);
 			dataset.CaseSensitive = false;
