@@ -86,14 +86,14 @@ namespace Gzl.BusinessLogicLayer
         /// <param name="zcbh">职称编号/param>
         public void LoadData(string zcbh)
         {
-            Database db = new Database();		//实例化一个Database类
+            Database db = new Database();
+            string sql = "Select * from [zcb] where zcbh = @zcbh";
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                new SqlParameter("@zcbh", zcbh)
+            };
+            DataRow dr = db.GetDataRow(sql, parameters);
 
-            string sql = "";
-            sql = "Select * from [zcb] where zcbh = " + zcbh;
-
-            DataRow dr = db.GetDataRow(sql);	//利用Database类的GetDataRow方法查询数据
-
-            //根据查询得到的数据，对成员赋值
             if (dr != null)
             {
                 this._zcbh = GetSafeData.ValidateDataRow_S(dr, "Zcbh");
@@ -148,16 +148,13 @@ namespace Gzl.BusinessLogicLayer
         public static bool HasZC(string zcbh)
         {
             Database db = new Database();
-
-            string sql = "";
-            sql = "Select * from [zcb] where [zcbh] = "
-                + SqlStringConstructor.GetQuotedString(zcbh);
-
-            DataRow row = db.GetDataRow(sql);
-            if (row != null)
-                return true;
-            else
-                return false;
+            string sql = "Select * from [zcb] where [zcbh] = @zcbh";
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                new SqlParameter("@zcbh", zcbh)
+            };
+            DataRow row = db.GetDataRow(sql, parameters);
+            return row != null;
         }
 
         /// <summary>
@@ -168,16 +165,13 @@ namespace Gzl.BusinessLogicLayer
         public static bool HasZCMC(string zcmc)
         {
             Database db = new Database();
-
-            string sql = "";
-            sql = "Select * from [zcb] where [zcmc] = "
-                + SqlStringConstructor.GetQuotedString(zcmc);
-
-            DataRow row = db.GetDataRow(sql);
-            if (row != null)
-                return true;
-            else
-                return false;
+            string sql = "Select * from [zcb] where [zcmc] = @zcmc";
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                new SqlParameter("@zcmc", zcmc)
+            };
+            DataRow row = db.GetDataRow(sql, parameters);
+            return row != null;
         }
 
         /// <summary>
