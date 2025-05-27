@@ -123,6 +123,11 @@ namespace Gzl.BusinessLogicLayer
         /// <param name="htUserInfo">用户信息哈希表</param>
         public static void Add(Hashtable userInfo)
         {
+            //确保Add/Update方法中对密码加密
+            if (userInfo.ContainsKey("dlmm"))
+            {
+                userInfo["dlmm"] = Encrypt.EncryptString(userInfo["dlmm"].ToString(), userInfo["czy"].ToString());
+            }
             Database db = new Database();		//实例化一个Database类
             db.Insert("[czyb]", userInfo);	//利用Database类的Insert方法添加用户数据
         }

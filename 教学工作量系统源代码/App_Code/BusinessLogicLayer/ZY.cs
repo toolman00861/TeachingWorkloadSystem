@@ -154,6 +154,7 @@ namespace Gzl.BusinessLogicLayer
         {
             int Count = 0;
             string where = "";
+            List<SqlParameter> parameters = new List<SqlParameter>();
             foreach (DictionaryEntry item in queryItems)
             {
                 if (Count == 0)
@@ -162,23 +163,20 @@ namespace Gzl.BusinessLogicLayer
                     where += " And ";
                 if (item.Value.GetType().ToString() == "System.String")
                 {
-
-                    where +=  item.Key.ToString()
-                             + " Like "
-                             + SqlStringConstructor.GetQuotedString(
-                             item.Value.ToString()
-                             + "%");
+                    where += item.Key.ToString() + " Like @param" + Count;
+                    parameters.Add(new SqlParameter("@param" + Count, item.Value.ToString() + "%"));
                 }
                 else
                 {
-                    where += item.Key.ToString() + "= " + item.Value;
+                    where += item.Key.ToString() + "= @param" + Count;
+                    parameters.Add(new SqlParameter("@param" + Count, item.Value));
                 }
                 Count++;
             }
 
             string sql = "Select * From [zyb] " + where;
             Database db = new Database();
-            return db.GetDataTable(sql);
+            return db.GetDataTable(sql, parameters.ToArray());
         }
 
 
